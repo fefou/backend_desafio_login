@@ -24,6 +24,7 @@ if(!req.session.usuario){
 // ------------ PRODUCTOS ------------
 router.get("/realtimeproducts",auth, async (req, res) => {
 
+  let {mensajeBienvenida} = req.query
   let pagina = 1
   if (req.query.pagina) {
     pagina = Number(req.query.pagina)
@@ -52,7 +53,7 @@ router.get("/realtimeproducts",auth, async (req, res) => {
 
     console.log(products)
 
-    res.status(200).render("productos", { products: products.docs, totalPages, hasNextPage, hasPrevPage, prevPage, nextPage, limit: limite, category, sort });
+    res.status(200).render("productos", { products: products.docs, totalPages, hasNextPage, hasPrevPage, prevPage, nextPage, limit: limite, category, sort, mensajeBienvenida});
 
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -176,5 +177,5 @@ router.get('/perfil', auth, (req, res) => {
   let usuario=req.session.usuario
 
   res.setHeader('Content-Type', 'text/html');
-  res.status(200).render('perfil');
+  res.status(200).render('perfil', {usuario});
 });
